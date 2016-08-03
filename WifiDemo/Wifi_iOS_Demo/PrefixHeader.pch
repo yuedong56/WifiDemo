@@ -1,0 +1,31 @@
+//
+//  PrefixHeader.pch
+//  WifiDemo
+//
+//  Created by yuedongkui on 16/8/3.
+//  Copyright © 2016年 LY. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+
+//AppDelegate
+#define APP_DELEGATE ((LYAppDelegate *)[[UIApplication sharedApplication] delegate])
+
+//打印
+#ifdef DEBUG
+#define CLog(format, ...) NSLog(format,##__VA_ARGS__)
+#else
+#define CLog(format, ...)
+#endif
+
+//尺寸
+#define ScreenWidth [UIScreen mainScreen].bounds.size.width
+#define ScreenHeight [UIScreen mainScreen].bounds.size.height
+
+
+#endif /* PrefixHeader_pch */
