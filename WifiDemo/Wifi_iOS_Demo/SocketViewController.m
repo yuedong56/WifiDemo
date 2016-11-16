@@ -142,7 +142,7 @@
     NSLog(@"data === %@", data);
     NSString *receive = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
     NSLog(@"收到新消息 ==== %@", receive);
-    _logLabel.text = [NSString stringWithFormat:@"%@\n收到消息：%@", _logLabel.text, receive];
+    _logLabel.text = [NSString stringWithFormat:@"%@\n收到消息：%@", _logLabel.text, data.description];
 }
 
 
