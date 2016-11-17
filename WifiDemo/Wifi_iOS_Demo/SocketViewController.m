@@ -27,6 +27,7 @@
 
 @property (strong, nonatomic) GCDAsyncSocket *clientSocket;
 @property (strong, nonatomic) GCDAsyncSocket *serverSocket;
+@property (strong, nonatomic) GCDAsyncSocket *receiveSocket;
 
 @end
 
@@ -126,14 +127,29 @@
 
 - (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)err
 {
-    NSLog(@"连接断开❎❎❎❎❎❎❎❎， error:%@", err);
+    if ([sock isEqual:self.serverSocket]) {
+        NSLog(@"serverSocket ❌断开 err = %@", err);
+    }
+    else if ([sock isEqual:self.clientSocket]) {
+        NSLog(@"clientSocket ❌断开 err = %@", err);
+    }
+    else if ([sock isEqual:self.receiveSocket]) {
+        NSLog(@"receiveSocket ❌断开 err = %@", err);
+    }
+    else {
+        NSLog(@"其他问题 err = %@", err);
+    }
+    //连接
+//    NSError *error = nil;
+//    [self.clientSocket connectToHost:_ip onPort:_port error:&error];
+//    NSLog(@"连接...error ----- %@, %@, %ld", error, _ip, _port);
 }
 
 #pragma mark- GCDAsyncSocketDelegate
 - (void)socket:(GCDAsyncSocket *)sock didAcceptNewSocket:(GCDAsyncSocket *)newSocket
 {
-    self.clientSocket = newSocket;
-    [self.clientSocket readDataWithTimeout:0 tag:888];
+    self.receiveSocket = newSocket;
+    [self.receiveSocket readDataWithTimeout:-1 tag:888];
     NSLog(@"有新的socket接入 %s", __FUNCTION__);
 }
 
@@ -143,6 +159,8 @@
     NSString *receive = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
     NSLog(@"收到新消息 ==== %@", receive);
     _logLabel.text = [NSString stringWithFormat:@"%@\n收到消息：%@", _logLabel.text, data.description];
+    
+    [self.receiveSocket readDataWithTimeout:-1 tag:888];
 }
 
 
